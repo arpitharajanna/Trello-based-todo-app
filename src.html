@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>jQuery Trello Board Example</title>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="css/app.css">
+        <script src="js/app.js"></script>
+    </head>
+	
+    <body>
+
+        <div class="todo-app-container">
+            <div class="todo-app-header">
+                <h1 style="margin:0;">TODO APP</h1>
+            </div>
+        
+<div class="todo-task container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="box" data-title="Not Done">
+                    <div class="column-header">
+                       <h4> Not Done</h4>
+                    </div>
+                    <div class="body">
+                        <ul id="sortable1" class="droptrue">
+                            <li class="ui-state-highlight myBtn"><h4>Task 1</h4>
+							</li>
+                            <li class="ui-state-highlight  "><h4>Task 1</h4>
+							</li>
+                            <li class="ui-state-highlight  "><h4>Task 2</h4>
+							</li>
+                            <li class="ui-state-highlight  "><h4>Task 3</h4>
+							</li>
+                            <li class="ui-state-highlight  "><h4>Task 4</h4>
+							</li>
+                        </ul>
+                    </div>
+                    <div class="btnToolbar">
+                            <a id="btnCreateNewOrder" href="#" class="btn"><i class="fa fa-plus"></i>Add a new task</a>     
+                        </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="box" data-title="In Progress">
+                    <div class="column-header">
+                      <h4> In Progress</h4>
+                    </div>
+                    <div class="body">
+                        <ul id="sortable2" class="dropfalse">
+                            <li class="ui-state-highlight"><h4>Task 1</h4></li>
+                            <li class="ui-state-highlight"><h4>Task 2</h4></li>
+                            <li class="ui-state-highlight"><h4>Task 3</h4></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+			<div class="col-md-4">
+                <div class="box" data-title="Completed">
+                    <div class="column-header">
+                        <h4>Completed</h4>
+                    </div>
+                    <div class="body">
+                        <ul id="sortable2" class="dropfalse">
+                            <li class="ui-state-highlight"><h4>Task 1</h4></li>
+                            <li class="ui-state-highlight"><h4>Task 2</h4></li>
+                            <li class="ui-state-highlight"><h4>Task 3</h4></li>
+                        </ul>
+                    </div> 
+                </div>
+			</div>
+        </div>
+</div>
+
+         
+        </div>
+        
+    
+		<!-- this code is used to open a modal onclick of each task card -->
+		<div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                  <span class="close">&times;</span>
+                  <div id="myDIV" class="header">
+                        <h2 style="margin:5px">My Tasks List</h2>
+                        <input type="text" id="myInput" placeholder="Write a task description">
+                        <span onclick="newElement()" class="addBtn">Add</span>
+                      </div>
+                      
+                      <ul id="myUL" class="ul-list">
+                        <li class="task_list">create a table</li>
+                        <li class="task_list" >style the table</li>
+                        <li class="task_list">add functions</li>        
+                      </ul>
+                </div>
+              </div>
+
+            
+                  
+<!-- this is used to create a new card in each column -->
+
+        <br style="clear:both">
+        <div id="dialog-form" title="Create new task Card">
+            <form>
+                <fieldset>
+                    <label for="title">Title</label>
+                    <input type="text" name="tilte" id="title"  class="text ui-widget-content ui-corner-all">
+                    <label for="list">List</label>
+                    <select id="list" name="list">
+                        <option value="Not Done">Not Done</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                    <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                    <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+                </fieldset>
+            </form>
+        </div>
+            </div>
+        </div>  
+    </body>
+
+    <script>
+        //This scripti is used to add task details under each task card and check them off or close them//
+    var myNodelist = document.getElementsByClassName("task_list");
+        var i;
+        for (i = 0; i < myNodelist.length; i++) {
+        var span = document.createElement("SPAN");
+        var txt = document.createTextNode("\u00D7");
+        span.className = "close";
+        span.appendChild(txt);
+        myNodelist[i].appendChild(span);
+    }
+
+// Click on a close button to hide the current list item
+        var close = document.getElementsByClassName("close");
+            var i;
+            for (i = 0; i < close.length; i++) {
+            close[i].onclick = function() {
+            var div = this.parentElement;
+            div.style.display = "none";
+        }
+    }
+
+// Add a "checked" symbol when clicking on a list item
+        var list = document.getElementById("myUL");
+            console.log(list)
+            list.addEventListener('click', function(ev) {
+            if (ev.target.tagName === 'LI') {
+            ev.target.classList.toggle('checked');
+        }
+    }, false);
+
+
+// Create a new list item when clicking on the "Add" button
+        function newElement() {
+            var li = document.createElement("li");
+            var inputValue = document.getElementById("myInput").value;
+            var t = document.createTextNode(inputValue);
+            li.appendChild(t);
+                if (inputValue === '') {
+                 alert("You must write something!");
+                } else {
+                    document.getElementById("myUL").appendChild(li);
+                }
+                document.getElementById("myInput").value = "";
+
+            var span = document.createElement("SPAN");
+            var txt = document.createTextNode("\u00D7");
+                span.className = "close";
+                span.appendChild(txt);
+                li.appendChild(span);
+
+            for (i = 0; i < close.length; i++) {
+                 close[i].onclick = function() {
+                 var div = this.parentElement;
+                div.style.display = "none";
+            }
+         }
+        }
+
+        </script>
+</html>
